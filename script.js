@@ -1,7 +1,48 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize EmailJS with your public key
-    emailjs.init("dF0bH-7dkGwGc92hO"); // Replace with your actual EmailJS public key
+// Initialize EmailJS with your public key
+emailjs.init("dF0bH-7dkGwGc92hO");
 
+// Form handling
+function handleSubmit(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
+    
+    // Show loading status
+    formStatus.textContent = 'Invio in corso...';
+    formStatus.className = 'form-status';
+    formStatus.style.display = 'block';
+    
+    // Prepare email parameters
+    const templateParams = {
+        from_name: form.nome.value,
+        from_email: form.email.value,
+        message: form.messaggio.value,
+        to_name: 'Rock Sound',
+        reply_to: form.email.value
+    };
+
+    // Send email using EmailJS
+    emailjs.send('service_2r6dg7s', 'template_0am6q9k', templateParams)
+        .then(function(response) {
+            formStatus.textContent = 'Messaggio inviato con successo!';
+            formStatus.className = 'form-status success';
+            form.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                formStatus.style.display = 'none';
+            }, 5000);
+        })
+        .catch(function(error) {
+            formStatus.textContent = 'Errore nell\'invio del messaggio. Riprova più tardi.';
+            formStatus.className = 'form-status error';
+        });
+    
+    return false;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
     // Theme Toggle
     const themeToggle = document.querySelector('.theme-toggle');
     const html = document.documentElement;
@@ -114,45 +155,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Form handling
-    function handleSubmit(event) {
-        event.preventDefault();
-        
-        const form = document.getElementById('contactForm');
-        const formStatus = document.getElementById('formStatus');
-        
-        // Show loading status
-        formStatus.textContent = 'Invio in corso...';
-        formStatus.className = 'form-status';
-        formStatus.style.display = 'block';
-        
-        // Prepare email parameters
-        const templateParams = {
-            from_name: form.nome.value,
-            from_email: form.email.value,
-            message: form.messaggio.value,
-            to_name: 'Rock Sound',
-            reply_to: form.email.value
-        };
-
-        // Send email using EmailJS
-        emailjs.send('service_2r6dg7s', 'template_0am6q9k', templateParams)
-            .then(function(response) {
-                formStatus.textContent = 'Messaggio inviato con successo!';
-                formStatus.className = 'form-status success';
-                form.reset();
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    formStatus.style.display = 'none';
-                }, 5000);
-            })
-            .catch(function(error) {
-                formStatus.textContent = 'Errore nell\'invio del messaggio. Riprova più tardi.';
-                formStatus.className = 'form-status error';
-            });
-        
-        return false;
-    }
 }); 
