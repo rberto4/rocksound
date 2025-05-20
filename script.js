@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize EmailJS with your public key
-    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
+    emailjs.init("dF0bH-7dkGwGc92hO"); // Replace with your actual EmailJS public key
 
     // Theme Toggle
     const themeToggle = document.querySelector('.theme-toggle');
