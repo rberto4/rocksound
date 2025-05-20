@@ -65,20 +65,23 @@ nav {
 }
 
 /* Theme Toggle */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .theme-toggle {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     cursor: pointer;
-    margin-left: 2rem;
     padding: 0.5rem;
     border-radius: 50%;
-    background-color: var(--card-bg);
-    transition: transform 0.3s ease;
+    transition: background-color 0.3s;
 }
 
 .theme-toggle:hover {
-    transform: scale(1.1);
+    background-color: var(--hover-color);
 }
 
 .theme-toggle i {
@@ -86,8 +89,15 @@ nav {
     color: var(--text-color);
 }
 
-[data-theme="dark"] .fa-sun,
-[data-theme="light"] .fa-moon {
+.theme-toggle .fa-sun {
+    display: none;
+}
+
+[data-theme="light"] .theme-toggle .fa-sun {
+    display: block;
+}
+
+[data-theme="light"] .theme-toggle .fa-moon {
     display: none;
 }
 
@@ -255,51 +265,43 @@ nav {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('images/bobdylan1.webp') center/cover;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 2rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('images/header.jpg') center/cover no-repeat;
     position: relative;
 }
 
 .hero-content {
+    max-width: 1200px;
+    width: 100%;
     position: relative;
     z-index: 2;
 }
 
 .hero-logo {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    border: 3px solid var(--accent-color);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+    margin-bottom: 1rem;
 }
 
 .hero-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 200px;
+    height: auto;
     border-radius: 50%;
+    border: 3px solid var(--accent-color);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
-    margin-top: 2rem;
     font-size: 1.5rem;
-    color: #ffffff;
+    margin-bottom: 2rem;
+    color: var(--text-color);
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-family: 'Oswald', sans-serif;
-    font-weight: 500;
 }
 
 /* Discografia Section */

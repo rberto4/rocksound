@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Sound - Band Musicale</title>
+    <title>Rock Sound - Band Musicale Bergamo</title>
     <link rel="icon" type="image/webp" href="images/logo.webp">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -22,14 +22,16 @@
                 <li><a href="#eventi">Eventi</a></li>
                 <li><a href="#contatti">Contatti</a></li>
             </ul>
-            <div class="theme-toggle">
-                <i class="fas fa-sun"></i>
-                <i class="fas fa-moon"></i>
-            </div>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-right">
+                <div class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </nav>
     </header>
@@ -64,17 +66,9 @@
     </section>
 
     <section id="gallery" class="gallery">
-        <h2>Photo Gallery</h2>
+        <h2>Galleria foto</h2>
         <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="images/bobdylan1.webp" alt="Rock Sound Performance 1">
-            </div>
-            <div class="gallery-item">
-                <img src="images/bobdylan2.webp" alt="Rock Sound Performance 2">
-            </div>
-            <div class="gallery-item">
-                <img src="images/bobdylan3.webp" alt="Rock Sound Performance 3">
-            </div>
+            <!-- Le immagini verranno caricate dinamicamente da data.json -->
         </div>
         <div id="lightbox" class="lightbox">
             <span class="close">&times;</span>
@@ -87,18 +81,7 @@
     <section id="eventi" class="eventi">
         <h2>Prossimi Eventi</h2>
         <div class="eventi-container">
-            <div class="evento">
-                <h3>Bob Dylan Live</h3>
-                <div class="evento-info">
-                    <p><i class="fas fa-calendar"></i> 16 Maggio 2025</p>
-                    <p><i class="fas fa-clock"></i> 20:30</p>
-                    <p><i class="fas fa-map-marker-alt"></i> <a href="#" class="location-link">CineTeatro di Redona</a></p>
-                    <p><i class="fas fa-ticket-alt"></i> Ingresso: €7</p>
-                </div>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5572.026106160638!2d9.689559577659256!3d45.71077497107898!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478150d9cf8de17f%3A0xfe8f58a68bc184d4!2sCineteatro%20Qoelet%20di%20Redona!5e0!3m2!1sit!2sit!4v1747768061139!5m2!1sit!2sit" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
+            <!-- Gli eventi verranno caricati dinamicamente da data.json -->
         </div>
     </section>
 
