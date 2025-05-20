@@ -206,6 +206,100 @@ nav {
     border-bottom: none;
 }
 
+.vedi-tutti-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.vedi-tutti-btn:hover {
+    background-color: #ff3333;
+}
+
+/* Stili per la pagina del repertorio completo */
+.repertorio-completo {
+    padding: 8rem 2rem 5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.repertorio-completo h1 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    position: relative;
+    padding-bottom: 1rem;
+    font-weight: 500;
+}
+
+.repertorio-completo h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--secondary-color);
+}
+
+.artist-section {
+    margin-bottom: 2rem;
+}
+
+.artist-section h2 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+.artist-section ul {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.artist-section li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--card-bg);
+    transition: transform 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.artist-section li:hover {
+    transform: translateX(10px);
+    color: var(--secondary-color);
+}
+
+#repertorio-container {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .repertorio-completo h1 {
+        font-size: 2rem;
+    }
+    
+    .artist-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .artist-section li {
+        font-size: 1rem;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hamburger {
@@ -258,8 +352,14 @@ nav {
     }
 
     .hero-logo {
-        width: 200px;
-        height: 200px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .hero-logo img {
+        width: 150px;
+        height: 150px;
     }
 }
 
@@ -272,7 +372,7 @@ nav {
     text-align: center;
     padding: 2rem;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('images/header.jpg') center/cover no-repeat;
+                url('images/bobdylan2.webp') center/cover no-repeat;
     position: relative;
 }
 
@@ -285,6 +385,9 @@ nav {
 
 .hero-logo {
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .hero-logo img {
@@ -298,7 +401,7 @@ nav {
 .hero-subtitle {
     font-size: 1.5rem;
     margin-bottom: 2rem;
-    color: var(--text-color);
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -613,14 +716,15 @@ h1, h2, h3 {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     gap: 4rem;
+    align-items: stretch;
 }
 
 .contatti-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .contatto-item {
@@ -629,6 +733,10 @@ h1, h2, h3 {
     background-color: var(--card-bg);
     border-radius: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .contatto-item:hover {
@@ -640,6 +748,7 @@ h1, h2, h3 {
     font-size: 2rem;
     color: var(--secondary-color);
     margin-bottom: 1rem;
+    display: block;
 }
 
 .contatto-item h3 {
@@ -649,10 +758,29 @@ h1, h2, h3 {
     letter-spacing: 2px;
 }
 
+.contatto-item p {
+    margin-bottom: 2rem;
+}
+
+.contatto-item .contact-divider {
+    width: 80%;
+    height: 1px;
+    background-color: var(--card-bg);
+    margin: 2rem auto;
+    opacity: 0.5;
+}
+
+.contatto-item p:last-child {
+    margin-bottom: 0;
+}
+
 .contatti-form {
     background-color: var(--card-bg);
     padding: 2rem;
     border-radius: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .contatti-form h3 {
@@ -678,7 +806,7 @@ h1, h2, h3 {
 }
 
 .form-group textarea {
-    height: 150px;
+    height: 200px;
     resize: vertical;
 }
 
@@ -699,43 +827,26 @@ h1, h2, h3 {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: auto;
 }
 
 .submit-btn:hover {
     background-color: #ff3333;
 }
 
-/* Update responsive design */
+/* Update responsive design for contacts */
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .hero-content h1 {
-        font-size: 4rem;
-    }
-    
-    .hero-content p {
-        font-size: 1.4rem;
-    }
-    
-    .discografia h2,
-    .gallery h2,
-    .eventi h2,
-    .contatti h2 {
-        font-size: 2.5rem;
-    }
-    
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .contatti-container {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
     
-    .contatti-info {
-        grid-template-columns: 1fr;
+    .contatto-item {
+        margin-bottom: 2rem;
+    }
+    
+    .form-group textarea {
+        height: 150px;
     }
 }
 
@@ -760,4 +871,20 @@ h1, h2, h3 {
     background-color: rgba(220, 53, 69, 0.1);
     color: #dc3545;
     border: 1px solid #dc3545;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.back-button {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    opacity: 0.8;
 } 

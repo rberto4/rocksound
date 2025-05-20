@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; img-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https:;">
+    <meta name="description" content="Repertorio completo di Rock Sound - Band Musicale Bergamo">
+    <title>Repertorio - Rock Sound</title>
+    <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@400;700&display=swap" as="style">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Theme toggle specific styles */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-moon {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <a href="index.html" class="back-button" aria-label="Torna alla home">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="logo">
+                <img src="images/logo.webp" alt="Rock Sound Logo" width="50" height="50" loading="eager">
+            </div>
+            <div class="nav-right">
+                <div class="theme-toggle" id="themeToggle" role="button" aria-label="Cambia tema" tabindex="0">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="repertorio-completo">
+        <h1>Repertorio Completo</h1>
+        <div id="repertorio-container" role="list">
+            <!-- Il repertorio verrà caricato dinamicamente da data.json -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61575694056283" target="_blank" rel="noopener noreferrer" aria-label="Visita la nostra pagina Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                <a href="#" aria-label="Visita il nostro profilo Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                <a href="#" aria-label="Visita il nostro canale YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+            </div>
+            <p>&copy; 2025 Rock Sound. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize theme when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+        });
+
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = body.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                body.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // Add keyboard support for theme toggle
+            themeToggle.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    themeToggle.click();
+                }
+            });
+        });
+
+        // Load repertorio data with caching
+        async function loadRepertorio() {
+            try {
+                // Check cache first
+                const cachedData = localStorage.getItem('repertorioData');
+                const cacheTimestamp = localStorage.getItem('repertorioTimestamp');
+                const now = Date.now();
+                
+                // Use cache if it's less than 1 hour old
+                if (cachedData && cacheTimestamp && (now - parseInt(cacheTimestamp)) < 3600000) {
+                    renderRepertorio(JSON.parse(cachedData));
+                    return;
+                }
+
+                const response = await fetch('data.json');
+                const data = await response.json();
+                
+                // Cache the data
+                localStorage.setItem('repertorioData', JSON.stringify(data));
+                localStorage.setItem('repertorioTimestamp', now.toString());
+                
+                renderRepertorio(data);
+            } catch (error) {
+                console.error('Errore nel caricamento del repertorio:', error);
+                const container = document.getElementById('repertorio-container');
+                container.innerHTML = '<p class="error-message">Si è verificato un errore nel caricamento del repertorio. Riprova più tardi.</p>';
+            }
+        }
+
+        function renderRepertorio(data) {
+            const container = document.getElementById('repertorio-container');
+            
+            // Group songs by artist
+            const songsByArtist = {};
+            data.songs.forEach(song => {
+                if (!songsByArtist[song.artist]) {
+                    songsByArtist[song.artist] = [];
+                }
+                songsByArtist[song.artist].push(song.title);
+            });
+            
+            // Create sections for each artist
+            Object.entries(songsByArtist).forEach(([artist, songs]) => {
+                const section = document.createElement('div');
+                section.className = 'artist-section';
+                section.setAttribute('role', 'listitem');
+                
+                const artistTitle = document.createElement('h2');
+                artistTitle.textContent = artist;
+                section.appendChild(artistTitle);
+                
+                const songList = document.createElement('ul');
+                songList.setAttribute('role', 'list');
+                songs.forEach(title => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = title;
+                    listItem.setAttribute('role', 'listitem');
+                    songList.appendChild(listItem);
+                });
+                
+                section.appendChild(songList);
+                container.appendChild(section);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadRepertorio);
+    </script>
+</body>
+</html> 

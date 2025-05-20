@@ -1,33 +1,66 @@
 <!DOCTYPE html>
-<html lang="it" data-theme="dark">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; img-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https:;">
+    <meta name="description" content="Rock Sound - Band Musicale Bergamo specializzata in Rock Britannico e Americano anni '50-'80">
     <title>Rock Sound - Band Musicale Bergamo</title>
     <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@400;700&display=swap" as="style">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Theme toggle specific styles */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-moon {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
-                <img src="images/logo.webp" alt="Rock Sound Logo">
+                <img src="images/logo.webp" alt="Rock Sound Logo" width="50" height="50" loading="eager">
             </div>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#gruppo">Il Gruppo</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#eventi">Eventi</a></li>
-                <li><a href="#contatti">Contatti</a></li>
+                <li><a href="#home" aria-label="Vai alla sezione Home">Home</a></li>
+                <li><a href="#gruppo" aria-label="Vai alla sezione Il Gruppo">Il Gruppo</a></li>
+                <li><a href="#gallery" aria-label="Vai alla sezione Gallery">Gallery</a></li>
+                <li><a href="#eventi" aria-label="Vai alla sezione Eventi">Eventi</a></li>
+                <li><a href="#contatti" aria-label="Vai alla sezione Contatti">Contatti</a></li>
             </ul>
             <div class="nav-right">
-                <div class="theme-toggle">
-                    <i class="fas fa-sun"></i>
-                    <i class="fas fa-moon"></i>
+                <div class="theme-toggle" id="themeToggle" role="button" aria-label="Cambia tema" tabindex="0">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                    <i class="fas fa-sun" aria-hidden="true"></i>
                 </div>
-                <div class="hamburger">
+                <div class="hamburger" role="button" aria-label="Menu" tabindex="0">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -39,7 +72,7 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <div class="hero-logo">
-                <img src="images/logo.webp" alt="Rock Sound Logo">
+                <img src="images/logo.webp" alt="Rock Sound Logo" width="200" height="200" loading="eager">
             </div>
             <p class="hero-subtitle">Rock Britannico e Americano anni '50-'80</p>
         </div>
@@ -54,13 +87,8 @@
             </div>
             <div class="repertorio">
                 <h3>Repertorio</h3>
-                <ul>
-                    <li>BLOWIN IN THE WIND</li>
-                    <li>Knocking on heaven's Door</li>
-                    <li>LIKE A ROLLING STONE</li>
-                    <li>END OF THE LINE</li>
-                    <li>MR. TAMBURINE MEN</li>
-                </ul>
+                <ul id="repertorio-preview"></ul>
+                <a href="repertorio.html" class="vedi-tutti-btn">Vedi tutti i brani</a>
             </div>
         </div>
     </section>
@@ -93,26 +121,33 @@
                     <i class="fas fa-envelope"></i>
                     <h3>Email</h3>
                     <p>pieromarcassoli@virgilio.it</p>
-                </div>
-                <div class="contatto-item">
+                    <div class="contact-divider"></div>
                     <i class="fas fa-phone"></i>
                     <h3>Telefono</h3>
                     <p>333 507 4501</p>
                 </div>
             </div>
-            <form class="contatti-form" id="contactForm" onsubmit="return handleSubmit(event)">
+            <form class="contatti-form" id="contactForm" onsubmit="return handleSubmit(event)" novalidate>
                 <h3>Scrivici</h3>
                 <div class="form-group">
-                    <input type="text" id="nome" name="nome" placeholder="Nome" required>
+                    <input type="text" id="nome" name="nome" placeholder="Nome" required 
+                           pattern="[A-Za-z\s]{2,50}" 
+                           title="Inserisci un nome valido (2-50 caratteri, solo lettere e spazi)"
+                           aria-required="true">
                 </div>
                 <div class="form-group">
-                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required
+                           title="Inserisci un indirizzo email valido"
+                           aria-required="true">
                 </div>
                 <div class="form-group">
-                    <textarea id="messaggio" name="messaggio" placeholder="Messaggio" required></textarea>
+                    <textarea id="messaggio" name="messaggio" placeholder="Messaggio" required
+                              minlength="10" maxlength="1000"
+                              title="Il messaggio deve essere tra 10 e 1000 caratteri"
+                              aria-required="true"></textarea>
                 </div>
                 <button type="submit" class="submit-btn">Invia</button>
-                <div id="formStatus" class="form-status"></div>
+                <div id="formStatus" class="form-status" role="alert" aria-live="polite"></div>
             </form>
         </div>
     </section>
@@ -129,6 +164,112 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Initialize theme when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            loadRepertorioPreview();
+        });
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("public_key_here"); // Sostituisci con la tua chiave pubblica
+        })();
+
+        // Form validation and submission
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return false;
+            }
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Show loading state
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Invio in corso...';
+            submitBtn.disabled = true;
+
+            try {
+                // Send email using EmailJS
+                await emailjs.send('service_id_here', 'template_id_here', {
+                    from_name: data.nome,
+                    from_email: data.email,
+                    message: data.messaggio
+                });
+
+                // Show success message
+                const formStatus = document.getElementById('formStatus');
+                formStatus.textContent = 'Messaggio inviato con successo!';
+                formStatus.className = 'form-status success';
+                
+                // Reset form
+                form.reset();
+            } catch (error) {
+                // Show error message
+                const formStatus = document.getElementById('formStatus');
+                formStatus.textContent = 'Errore nell\'invio del messaggio. Riprova più tardi.';
+                formStatus.className = 'form-status error';
+                console.error('Errore EmailJS:', error);
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            }
+
+            return false;
+        }
+
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = body.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                body.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+
+        // Load repertorio preview
+        async function loadRepertorioPreview() {
+            const previewList = document.getElementById('repertorio-preview');
+            if (!previewList) return;
+
+            try {
+                const response = await fetch('data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                if (!data.songs || !Array.isArray(data.songs)) {
+                    throw new Error('Invalid data format: songs array not found');
+                }
+
+                // Clear existing content
+                previewList.innerHTML = '';
+                
+                // Add first 5 songs
+                const firstFiveSongs = data.songs.slice(0, 5);
+                firstFiveSongs.forEach(song => {
+                    const songItem = document.createElement('li');
+                    songItem.textContent = `${song.artist} - ${song.title}`;
+                    previewList.appendChild(songItem);
+                });
+            } catch (error) {
+                console.error('Errore nel caricamento del repertorio:', error);
+                previewList.innerHTML = '<li>Impossibile caricare il repertorio</li>';
+            }
+        }
+    </script>
 </body>
 </html> 
