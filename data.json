@@ -114,6 +114,21 @@
             "year": 1973
         },
         {
+            "artist": "Bob Dylan",
+            "title": "Tangled Up in Blue",
+            "year": 1975
+        },
+        {
+            "artist": "Bob Dylan",
+            "title": "Mr. Tambourine Man",
+            "year": 1965
+        },
+        {
+            "artist": "Bob Dylan",
+            "title": "All Along the Watchtower",
+            "year": 1967
+        },
+        {
             "artist": "Bruce Springsteen",
             "title": "Born to Run",
             "year": 1975
@@ -126,6 +141,21 @@
         {
             "artist": "Bruce Springsteen",
             "title": "Dancing in the Dark",
+            "year": 1984
+        },
+        {
+            "artist": "Bruce Springsteen",
+            "title": "The River",
+            "year": 1980
+        },
+        {
+            "artist": "Bruce Springsteen",
+            "title": "Badlands",
+            "year": 1978
+        },
+        {
+            "artist": "Bruce Springsteen",
+            "title": "Glory Days",
             "year": 1984
         },
         {
@@ -144,6 +174,21 @@
             "year": 1968
         },
         {
+            "artist": "The Rolling Stones",
+            "title": "Gimme Shelter",
+            "year": 1969
+        },
+        {
+            "artist": "The Rolling Stones",
+            "title": "Jumpin' Jack Flash",
+            "year": 1968
+        },
+        {
+            "artist": "The Rolling Stones",
+            "title": "Brown Sugar",
+            "year": 1971
+        },
+        {
             "artist": "The Beatles",
             "title": "Hey Jude",
             "year": 1968
@@ -159,6 +204,21 @@
             "year": 1969
         },
         {
+            "artist": "The Beatles",
+            "title": "Yesterday",
+            "year": 1965
+        },
+        {
+            "artist": "The Beatles",
+            "title": "A Hard Day's Night",
+            "year": 1964
+        },
+        {
+            "artist": "The Beatles",
+            "title": "Help!",
+            "year": 1965
+        },
+        {
             "artist": "Led Zeppelin",
             "title": "Stairway to Heaven",
             "year": 1971
@@ -169,6 +229,26 @@
             "year": 1969
         },
         {
+            "artist": "Led Zeppelin",
+            "title": "Kashmir",
+            "year": 1975
+        },
+        {
+            "artist": "Led Zeppelin",
+            "title": "Black Dog",
+            "year": 1971
+        },
+        {
+            "artist": "Led Zeppelin",
+            "title": "Rock and Roll",
+            "year": 1971
+        },
+        {
+            "artist": "Led Zeppelin",
+            "title": "Immigrant Song",
+            "year": 1970
+        },
+        {
             "artist": "Pink Floyd",
             "title": "Comfortably Numb",
             "year": 1979
@@ -176,6 +256,26 @@
         {
             "artist": "Pink Floyd",
             "title": "Wish You Were Here",
+            "year": 1975
+        },
+        {
+            "artist": "Pink Floyd",
+            "title": "Another Brick in the Wall",
+            "year": 1979
+        },
+        {
+            "artist": "Pink Floyd",
+            "title": "Money",
+            "year": 1973
+        },
+        {
+            "artist": "Pink Floyd",
+            "title": "Time",
+            "year": 1973
+        },
+        {
+            "artist": "Pink Floyd",
+            "title": "Shine On You Crazy Diamond",
             "year": 1975
         },
         {
@@ -189,6 +289,26 @@
             "year": 1965
         },
         {
+            "artist": "The Who",
+            "title": "Pinball Wizard",
+            "year": 1969
+        },
+        {
+            "artist": "The Who",
+            "title": "Won't Get Fooled Again",
+            "year": 1971
+        },
+        {
+            "artist": "The Who",
+            "title": "Behind Blue Eyes",
+            "year": 1971
+        },
+        {
+            "artist": "The Who",
+            "title": "The Seeker",
+            "year": 1970
+        },
+        {
             "artist": "David Bowie",
             "title": "Space Oddity",
             "year": 1969
@@ -197,6 +317,266 @@
             "artist": "David Bowie",
             "title": "Heroes",
             "year": 1977
+        },
+        {
+            "artist": "David Bowie",
+            "title": "Ziggy Stardust",
+            "year": 1972
+        },
+        {
+            "artist": "David Bowie",
+            "title": "Changes",
+            "year": 1971
+        },
+        {
+            "artist": "David Bowie",
+            "title": "Life on Mars?",
+            "year": 1971
+        },
+        {
+            "artist": "David Bowie",
+            "title": "Rebel Rebel",
+            "year": 1974
+        },
+        {
+            "artist": "Queen",
+            "title": "Bohemian Rhapsody",
+            "year": 1975
+        },
+        {
+            "artist": "Queen",
+            "title": "We Will Rock You",
+            "year": 1977
+        },
+        {
+            "artist": "Queen",
+            "title": "Another One Bites the Dust",
+            "year": 1980
+        },
+        {
+            "artist": "Queen",
+            "title": "We Are the Champions",
+            "year": 1977
+        },
+        {
+            "artist": "Queen",
+            "title": "Somebody to Love",
+            "year": 1976
+        },
+        {
+            "artist": "Queen",
+            "title": "Don't Stop Me Now",
+            "year": 1978
+        },
+        {
+            "artist": "The Doors",
+            "title": "Light My Fire",
+            "year": 1967
+        },
+        {
+            "artist": "The Doors",
+            "title": "Riders on the Storm",
+            "year": 1971
+        },
+        {
+            "artist": "The Doors",
+            "title": "Break On Through",
+            "year": 1967
+        },
+        {
+            "artist": "The Doors",
+            "title": "People Are Strange",
+            "year": 1967
+        },
+        {
+            "artist": "The Doors",
+            "title": "Roadhouse Blues",
+            "year": 1970
+        },
+        {
+            "artist": "The Doors",
+            "title": "Love Her Madly",
+            "year": 1971
+        },
+        {
+            "artist": "Creedence Clearwater Revival",
+            "title": "Fortunate Son",
+            "year": 1969
+        },
+        {
+            "artist": "Creedence Clearwater Revival",
+            "title": "Bad Moon Rising",
+            "year": 1969
+        },
+        {
+            "artist": "Creedence Clearwater Revival",
+            "title": "Have You Ever Seen the Rain",
+            "year": 1971
+        },
+        {
+            "artist": "Creedence Clearwater Revival",
+            "title": "Proud Mary",
+            "year": 1969
+        },
+        {
+            "artist": "Creedence Clearwater Revival",
+            "title": "Down on the Corner",
+            "year": 1969
+        },
+        {
+            "artist": "Creedence Clearwater Revival",
+            "title": "Who'll Stop the Rain",
+            "year": 1970
+        },
+        {
+            "artist": "The Clash",
+            "title": "London Calling",
+            "year": 1979
+        },
+        {
+            "artist": "The Clash",
+            "title": "Should I Stay or Should I Go",
+            "year": 1982
+        },
+        {
+            "artist": "The Clash",
+            "title": "Rock the Casbah",
+            "year": 1982
+        },
+        {
+            "artist": "The Clash",
+            "title": "Train in Vain",
+            "year": 1979
+        },
+        {
+            "artist": "The Clash",
+            "title": "I Fought the Law",
+            "year": 1979
+        },
+        {
+            "artist": "The Clash",
+            "title": "Spanish Bombs",
+            "year": 1979
+        },
+        {
+            "artist": "The Police",
+            "title": "Every Breath You Take",
+            "year": 1983
+        },
+        {
+            "artist": "The Police",
+            "title": "Roxanne",
+            "year": 1978
+        },
+        {
+            "artist": "The Police",
+            "title": "Message in a Bottle",
+            "year": 1979
+        },
+        {
+            "artist": "The Police",
+            "title": "Walking on the Moon",
+            "year": 1979
+        },
+        {
+            "artist": "The Police",
+            "title": "Don't Stand So Close to Me",
+            "year": 1980
+        },
+        {
+            "artist": "The Police",
+            "title": "So Lonely",
+            "year": 1978
+        },
+        {
+            "artist": "Dire Straits",
+            "title": "Sultans of Swing",
+            "year": 1978
+        },
+        {
+            "artist": "Dire Straits",
+            "title": "Money for Nothing",
+            "year": 1985
+        },
+        {
+            "artist": "Dire Straits",
+            "title": "Brothers in Arms",
+            "year": 1985
+        },
+        {
+            "artist": "Dire Straits",
+            "title": "Walk of Life",
+            "year": 1985
+        },
+        {
+            "artist": "Dire Straits",
+            "title": "Romeo and Juliet",
+            "year": 1980
+        },
+        {
+            "artist": "Dire Straits",
+            "title": "Tunnel of Love",
+            "year": 1980
+        },
+        {
+            "artist": "Fleetwood Mac",
+            "title": "Go Your Own Way",
+            "year": 1977
+        },
+        {
+            "artist": "Fleetwood Mac",
+            "title": "Dreams",
+            "year": 1977
+        },
+        {
+            "artist": "Fleetwood Mac",
+            "title": "The Chain",
+            "year": 1977
+        },
+        {
+            "artist": "Fleetwood Mac",
+            "title": "Rhiannon",
+            "year": 1975
+        },
+        {
+            "artist": "Fleetwood Mac",
+            "title": "Landslide",
+            "year": 1975
+        },
+        {
+            "artist": "Fleetwood Mac",
+            "title": "Don't Stop",
+            "year": 1977
+        },
+        {
+            "artist": "Eagles",
+            "title": "Hotel California",
+            "year": 1976
+        },
+        {
+            "artist": "Eagles",
+            "title": "Take It Easy",
+            "year": 1972
+        },
+        {
+            "artist": "Eagles",
+            "title": "Desperado",
+            "year": 1973
+        },
+        {
+            "artist": "Eagles",
+            "title": "Life in the Fast Lane",
+            "year": 1976
+        },
+        {
+            "artist": "Eagles",
+            "title": "Take It to the Limit",
+            "year": 1975
+        },
+        {
+            "artist": "Eagles",
+            "title": "Peaceful Easy Feeling",
+            "year": 1972
         }
     ]
 } 

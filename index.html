@@ -142,8 +142,7 @@
                 </div>
                 <div class="form-group">
                     <textarea id="messaggio" name="messaggio" placeholder="Messaggio" required
-                              minlength="10" maxlength="1000"
-                              title="Il messaggio deve essere tra 10 e 1000 caratteri"
+                              title="Inserisci il tuo messaggio"
                               aria-required="true"></textarea>
                 </div>
                 <button type="submit" class="submit-btn">Invia</button>
@@ -167,64 +166,202 @@
     <script>
         // Initialize theme when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Set theme
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
-            loadRepertorioPreview();
-        });
 
-        // Initialize EmailJS
-        (function() {
-            emailjs.init("public_key_here"); // Sostituisci con la tua chiave pubblica
-        })();
-
-        // Form validation and submission
-        async function handleSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return false;
+            // Utility function for fetching data with retry
+            async function fetchWithRetry(url, retries = 3) {
+                for (let i = 0; i < retries; i++) {
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        return await response.json();
+                    } catch (error) {
+                        if (i === retries - 1) throw error;
+                        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+                    }
+                }
             }
 
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            
-            // Show loading state
-            const submitBtn = form.querySelector('.submit-btn');
-            const originalBtnText = submitBtn.textContent;
-            submitBtn.textContent = 'Invio in corso...';
-            submitBtn.disabled = true;
-
-            try {
-                // Send email using EmailJS
-                await emailjs.send('service_id_here', 'template_id_here', {
-                    from_name: data.nome,
-                    from_email: data.email,
-                    message: data.messaggio
-                });
-
-                // Show success message
-                const formStatus = document.getElementById('formStatus');
-                formStatus.textContent = 'Messaggio inviato con successo!';
-                formStatus.className = 'form-status success';
+            // Load repertorio preview
+            const previewList = document.getElementById('repertorio-preview');
+            if (previewList) {
+                previewList.innerHTML = '<li>Caricamento repertorio...</li>';
                 
-                // Reset form
-                form.reset();
-            } catch (error) {
-                // Show error message
-                const formStatus = document.getElementById('formStatus');
-                formStatus.textContent = 'Errore nell\'invio del messaggio. Riprova più tardi.';
-                formStatus.className = 'form-status error';
-                console.error('Errore EmailJS:', error);
-            } finally {
-                // Reset button state
-                submitBtn.textContent = originalBtnText;
-                submitBtn.disabled = false;
+                fetchWithRetry('data.json')
+                    .then(data => {
+                        if (data && data.songs) {
+                            previewList.innerHTML = '';
+                            // Show first 10 songs instead of 5
+                            const songs = data.songs.slice(0, 10);
+                            
+                            // Load songs progressively with shorter delay
+                            let index = 0;
+                            function loadNextSong() {
+                                if (index < songs.length) {
+                                    const li = document.createElement('li');
+                                    li.textContent = `${songs[index].artist} - ${songs[index].title}`;
+                                    previewList.appendChild(li);
+                                    index++;
+                                    // Reduced delay to 50ms for faster loading
+                                    setTimeout(loadNextSong, 50);
+                                }
+                            }
+                            loadNextSong();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading repertorio:', error);
+                        previewList.innerHTML = '<li>Errore nel caricamento del repertorio. Riprova più tardi.</li>';
+                    });
             }
 
-            return false;
-        }
+            // Load gallery
+            const galleryGrid = document.querySelector('.gallery-grid');
+            if (galleryGrid) {
+                galleryGrid.innerHTML = '<p>Caricamento galleria...</p>';
+                
+                fetchWithRetry('data.json')
+                    .then(data => {
+                        if (data && data.gallery && data.gallery.preview) {
+                            galleryGrid.innerHTML = '';
+                            const images = data.gallery.preview;
+                            
+                            images.forEach((image, index) => {
+                                const div = document.createElement('div');
+                                div.className = 'gallery-item';
+                                div.innerHTML = `<img src="${image.src}" alt="${image.alt}" loading="lazy">`;
+                                div.addEventListener('click', () => openLightbox(index, images));
+                                galleryGrid.appendChild(div);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading gallery:', error);
+                        galleryGrid.innerHTML = '<p>Errore nel caricamento della galleria. Riprova più tardi.</p>';
+                    });
+            }
+
+            // Load events
+            const eventiContainer = document.querySelector('.eventi-container');
+            if (eventiContainer) {
+                eventiContainer.innerHTML = '<p>Caricamento eventi...</p>';
+                
+                fetchWithRetry('data.json')
+                    .then(data => {
+                        if (data && data.eventi) {
+                            eventiContainer.innerHTML = '';
+                            const events = data.eventi;
+                            
+                            // Load events progressively
+                            let index = 0;
+                            function loadNextEvent() {
+                                if (index < events.length) {
+                                    const event = events[index];
+                                    const div = document.createElement('div');
+                                    div.className = 'evento';
+                                    div.innerHTML = `
+                                        <h3>${event.titolo}</h3>
+                                        <div class="evento-info">
+                                            <p><i class="fas fa-calendar"></i> ${event.data}</p>
+                                            <p><i class="fas fa-clock"></i> ${event.ora}</p>
+                                            <p><i class="fas fa-map-marker-alt"></i> ${event.luogo}</p>
+                                            <p><i class="fas fa-euro-sign"></i> ${event.prezzo}</p>
+                                        </div>
+                                        <div class="map-container">
+                                            <iframe src="${event.mappa}" allowfullscreen="" loading="lazy"></iframe>
+                                        </div>
+                                    `;
+                                    eventiContainer.appendChild(div);
+                                    index++;
+                                    setTimeout(loadNextEvent, 100);
+                                }
+                            }
+                            loadNextEvent();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading events:', error);
+                        eventiContainer.innerHTML = '<p>Errore nel caricamento degli eventi. Riprova più tardi.</p>';
+                    });
+            }
+
+            // Lightbox functionality
+            let currentImageIndex = 0;
+            let images = [];
+
+            function openLightbox(index, imageArray) {
+                try {
+                    images = imageArray;
+                    currentImageIndex = index;
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightbox-img');
+                    
+                    if (lightbox && lightboxImg) {
+                        lightboxImg.src = images[currentImageIndex].src;
+                        lightbox.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error opening lightbox:', error);
+                }
+            }
+
+            function closeLightbox() {
+                try {
+                    const lightbox = document.getElementById('lightbox');
+                    if (lightbox) {
+                        lightbox.style.display = 'none';
+                    }
+                } catch (error) {
+                    console.error('Error closing lightbox:', error);
+                }
+            }
+
+            function changeImage(direction) {
+                try {
+                    currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+                    const lightboxImg = document.getElementById('lightbox-img');
+                    if (lightboxImg) {
+                        lightboxImg.src = images[currentImageIndex].src;
+                    }
+                } catch (error) {
+                    console.error('Error changing image:', error);
+                }
+            }
+
+            // Add event listeners for lightbox controls
+            const closeBtn = document.querySelector('.close');
+            const prevBtn = document.querySelector('.prev');
+            const nextBtn = document.querySelector('.next');
+            const lightbox = document.getElementById('lightbox');
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeLightbox);
+            }
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => changeImage(-1));
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => changeImage(1));
+            }
+            if (lightbox) {
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeLightbox();
+                    }
+                });
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (lightbox && lightbox.style.display === 'block') {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') changeImage(-1);
+                    if (e.key === 'ArrowRight') changeImage(1);
+                }
+            });
+        });
 
         // Theme toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -237,37 +374,110 @@
                 body.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
             });
+
+            // Hamburger menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', function() {
+                    hamburger.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    const isClickInside = hamburger.contains(event.target) || navLinks.contains(event.target);
+                    if (!isClickInside && navLinks.classList.contains('active')) {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
+                });
+
+                // Close menu when clicking on a link
+                const navItems = navLinks.querySelectorAll('a');
+                navItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    });
+                });
+            }
         });
 
-        // Load repertorio preview
-        async function loadRepertorioPreview() {
-            const previewList = document.getElementById('repertorio-preview');
-            if (!previewList) return;
+        // Initialize EmailJS (should be called once)
+        try {
+            console.log('Attempting to initialize EmailJS...');
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual public key
+            console.log('EmailJS initialized successfully.');
+        } catch (error) {
+            console.error('EmailJS initialization failed:', error);
+            // Potentially display an error message to the user about contact form not being available
+        }
+
+        const form = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        if (form) {
+            form.addEventListener('submit', handleSubmit);
+        } else {
+            console.warn('Contact form element not found.');
+        }
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            console.log('Form submission initiated.');
+
+            // Re-add form validation check
+            if (!form.checkValidity()) {
+                console.warn('Form is invalid. Reporting validity.');
+                form.reportValidity();
+                // Stop here if form is invalid
+                return;
+            }
+
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalBtnText = submitBtn.textContent;
+
+            if (formStatus) {
+                formStatus.textContent = 'Invio in corso...';
+                formStatus.className = 'form-status'; // Reset classes
+                formStatus.style.display = 'block';
+            }
+
+            // Disable submit button and show loading text
+            if(submitBtn) {
+                submitBtn.textContent = 'Invio...';
+                submitBtn.disabled = true;
+            }
+
+            const serviceID = 'YOUR_SERVICE_ID'; // Replace with your actual service ID
+            const templateID = 'YOUR_TEMPLATE_ID'; // Replace with your actual template ID
 
             try {
-                const response = await fetch('data.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                
-                if (!data.songs || !Array.isArray(data.songs)) {
-                    throw new Error('Invalid data format: songs array not found');
-                }
+                console.log('Attempting to send email...');
+                const response = await emailjs.sendForm(serviceID, templateID, form);
+                console.log('Email sent successfully:', response);
 
-                // Clear existing content
-                previewList.innerHTML = '';
-                
-                // Add first 5 songs
-                const firstFiveSongs = data.songs.slice(0, 5);
-                firstFiveSongs.forEach(song => {
-                    const songItem = document.createElement('li');
-                    songItem.textContent = `${song.artist} - ${song.title}`;
-                    previewList.appendChild(songItem);
-                });
+                if (formStatus) {
+                    formStatus.textContent = 'Messaggio inviato con successo!';
+                    formStatus.className = 'form-status success';
+                }
+                form.reset(); // Reset form after successful submission
+
             } catch (error) {
-                console.error('Errore nel caricamento del repertorio:', error);
-                previewList.innerHTML = '<li>Impossibile caricare il repertorio</li>';
+                console.error('Email sending failed:', error);
+
+                if (formStatus) {
+                    formStatus.textContent = 'Si è verificato un errore durante l\'invio. Riprova più tardi.';
+                    formStatus.className = 'form-status error';
+                }
+            } finally {
+                // Re-enable submit button and restore text
+                if(submitBtn) {
+                     submitBtn.textContent = originalBtnText;
+                     submitBtn.disabled = false;
+                }
             }
         }
     </script>

@@ -83,97 +83,73 @@
     <script>
         // Initialize theme when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Set theme
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
-        });
 
-        // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const body = document.body;
-
-            themeToggle.addEventListener('click', function() {
-                const currentTheme = body.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                body.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-            });
-
-            // Add keyboard support for theme toggle
-            themeToggle.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    themeToggle.click();
-                }
-            });
-        });
-
-        // Load repertorio data with caching
-        async function loadRepertorio() {
-            try {
-                // Check cache first
-                const cachedData = localStorage.getItem('repertorioData');
-                const cacheTimestamp = localStorage.getItem('repertorioTimestamp');
-                const now = Date.now();
+            // Load all songs
+            const repertorioContainer = document.getElementById('repertorio-container');
+            if (repertorioContainer) {
+                repertorioContainer.innerHTML = '<p>Caricamento repertorio...</p>';
                 
-                // Use cache if it's less than 1 hour old
-                if (cachedData && cacheTimestamp && (now - parseInt(cacheTimestamp)) < 3600000) {
-                    renderRepertorio(JSON.parse(cachedData));
-                    return;
-                }
+                fetch('data.json')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data && data.songs) {
+                            repertorioContainer.innerHTML = '';
+                            
+                            // Group songs by artist
+                            const songsByArtist = data.songs.reduce((acc, song) => {
+                                if (!acc[song.artist]) {
+                                    acc[song.artist] = [];
+                                }
+                                acc[song.artist].push(song);
+                                return acc;
+                            }, {});
 
-                const response = await fetch('data.json');
-                const data = await response.json();
-                
-                // Cache the data
-                localStorage.setItem('repertorioData', JSON.stringify(data));
-                localStorage.setItem('repertorioTimestamp', now.toString());
-                
-                renderRepertorio(data);
-            } catch (error) {
-                console.error('Errore nel caricamento del repertorio:', error);
-                const container = document.getElementById('repertorio-container');
-                container.innerHTML = '<p class="error-message">Si è verificato un errore nel caricamento del repertorio. Riprova più tardi.</p>';
+                            // Create sections for each artist
+                            Object.entries(songsByArtist).forEach(([artist, songs]) => {
+                                const artistSection = document.createElement('div');
+                                artistSection.className = 'artist-section';
+                                
+                                const artistTitle = document.createElement('h2');
+                                artistTitle.textContent = artist;
+                                artistSection.appendChild(artistTitle);
+
+                                const songsList = document.createElement('ul');
+                                songs.forEach(song => {
+                                    const li = document.createElement('li');
+                                    li.textContent = `${song.title} (${song.year})`;
+                                    songsList.appendChild(li);
+                                });
+                                
+                                artistSection.appendChild(songsList);
+                                repertorioContainer.appendChild(artistSection);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading repertorio:', error);
+                        repertorioContainer.innerHTML = '<p>Errore nel caricamento del repertorio. Riprova più tardi.</p>';
+                    });
             }
-        }
 
-        function renderRepertorio(data) {
-            const container = document.getElementById('repertorio-container');
-            
-            // Group songs by artist
-            const songsByArtist = {};
-            data.songs.forEach(song => {
-                if (!songsByArtist[song.artist]) {
-                    songsByArtist[song.artist] = [];
-                }
-                songsByArtist[song.artist].push(song.title);
-            });
-            
-            // Create sections for each artist
-            Object.entries(songsByArtist).forEach(([artist, songs]) => {
-                const section = document.createElement('div');
-                section.className = 'artist-section';
-                section.setAttribute('role', 'listitem');
-                
-                const artistTitle = document.createElement('h2');
-                artistTitle.textContent = artist;
-                section.appendChild(artistTitle);
-                
-                const songList = document.createElement('ul');
-                songList.setAttribute('role', 'list');
-                songs.forEach(title => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = title;
-                    listItem.setAttribute('role', 'listitem');
-                    songList.appendChild(listItem);
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    const currentTheme = document.body.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.body.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
                 });
-                
-                section.appendChild(songList);
-                container.appendChild(section);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', loadRepertorio);
+            }
+        });
     </script>
 </body>
 </html> 
